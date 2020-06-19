@@ -1,0 +1,126 @@
+<?php
+
+namespace App\Entity;
+
+use App\Repository\TaskRepository;
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity(repositoryClass=TaskRepository::class)
+ */
+class Task
+{
+    /**
+     * @ORM\Id()
+     * @ORM\GeneratedValue()
+     * @ORM\Column(type="integer")
+     */
+    private $id;
+
+    /**
+     * @ORM\Column(type="string", length=30)
+     */
+    private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $finished;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $finished_at;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $created_at;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=ColumnKanban::class, inversedBy="tasks")
+     */
+    private $column_kanban;
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getFinished(): ?bool
+    {
+        return $this->finished;
+    }
+
+    public function setFinished(bool $finished): self
+    {
+        $this->finished = $finished;
+
+        return $this;
+    }
+
+    public function getFinishedAt(): ?\DateTimeInterface
+    {
+        return $this->finished_at;
+    }
+
+    public function setFinishedAt(?\DateTimeInterface $finished_at): self
+    {
+        $this->finished_at = $finished_at;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $created_at): self
+    {
+        $this->created_at = $created_at;
+
+        return $this;
+    }
+
+    public function getColumnKanban(): ?ColumnKanban
+    {
+        return $this->column_kanban;
+    }
+
+    public function setColumnKanban(?ColumnKanban $column_kanban): self
+    {
+        $this->column_kanban = $column_kanban;
+
+        return $this;
+    }
+}

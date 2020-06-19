@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit ColumnKanban{% endblock %}
+
+{% block body %}
+    <h1>Edit ColumnKanban</h1>
+
+    {{ include('column_kanban/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('column_kanban_index') }}">back to list</a>
+
+    {{ include('column_kanban/_delete_form.html.twig') }}
+{% endblock %}

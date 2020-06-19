@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TableKanban index{% endblock %}
+
+{% block body %}
+    <h1>TableKanban index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for table_kanban in table_kanbans %}
+            <tr>
+                <td>{{ table_kanban.id }}</td>
+                <td>{{ table_kanban.name }}</td>
+                <td>
+                    <a href="{{ path('table_kanban_show', {'id': table_kanban.id}) }}">show</a>
+                    <a href="{{ path('table_kanban_edit', {'id': table_kanban.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('table_kanban_new') }}">Create new</a>
+{% endblock %}

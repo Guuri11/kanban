@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ColumnKanban{% endblock %}
+
+{% block body %}
+    <h1>Create new ColumnKanban</h1>
+
+    {{ include('column_kanban/_form.html.twig') }}
+
+    <a href="{{ path('column_kanban_index') }}">back to list</a>
+{% endblock %}
