@@ -8,12 +8,22 @@ use Symfony\Component\Routing\Annotation\Route;
 class DefaultController extends AbstractController
 {
     /**
-     * @Route("/default", name="default")
+     * @Route("/", name="default")
+     *
+     * Route to home page
+     */
+    public function default()
+    {
+        return $this->render('default/index.html.twig');
+    }
+
+    /**
+     * @Route("/{reactRouting}", name="homepage")
+     *
+     * Controls all the public routes but dont access into /admin
      */
     public function index()
     {
-        return $this->render('default/index.html.twig', [
-            'controller_name' => 'DefaultController',
-        ]);
+        return $this->render('default/index.html.twig');
     }
 }
