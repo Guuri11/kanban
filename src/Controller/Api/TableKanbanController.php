@@ -96,6 +96,7 @@ class TableKanbanController extends AbstractController
                     $user = $userRepository->findOneBy(["username"=>$this->getUser()->getUsername()]);
                     $table->setName($data["name"]);
                     $table->setUser($user);
+                    $table->setImage($data["image"]);
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($table);
@@ -157,6 +158,7 @@ class TableKanbanController extends AbstractController
             if (hash_equals($_SESSION["token"], $data["token"])) {
                 try {
                     $tableKanban->setName($data["name"]);
+                    $tableKanban->setImage($data["image"]);
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->flush();
                 } catch (Exception $e){
