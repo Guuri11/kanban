@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TableKanbanRepository::class)
  */
-class TableKanban
+class TableKanban implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -25,7 +25,7 @@ class TableKanban
     private $name;
 
     /**
-     * @ORM\OneToMany(targetEntity=ColumnKanban::class, mappedBy="table_kanban")
+     * @ORM\OneToMany(targetEntity=ColumnKanban::class, mappedBy="table_kanban", cascade={"persist", "remove"})
      */
     private $columnsKanban;
 
@@ -97,5 +97,15 @@ class TableKanban
         $this->user = $user;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id"=>$this->getId(),
+            "name"=>$this->getName(),
+            "columns"=>$this->getColumnsKanban()->toArray(),
+            "user"=>$this->getUser()
+        ];
     }
 }

@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=TaskRepository::class)
  */
-class Task
+class Task implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -122,5 +122,18 @@ class Task
         $this->column_kanban = $column_kanban;
 
         return $this;
+    }
+
+    public function jsonSerialize()
+    {
+        return [
+            "id"=>$this->getId(),
+            "name"=>$this->getName(),
+            "description"=>$this->getDescription(),
+            "column"=>$this->getColumnKanban()->getId(),
+            "finished"=>$this->getFinished(),
+            "finished_at"=>$this->getFinished(),
+            "created_at"=>$this->getCreatedAt()
+        ];
     }
 }

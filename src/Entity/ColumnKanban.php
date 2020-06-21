@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=ColumnKanbanRepository::class)
  */
-class ColumnKanban
+class ColumnKanban implements \JsonSerializable
 {
     /**
      * @ORM\Id()
@@ -31,25 +31,38 @@ class ColumnKanban
     private $table_kanban;
 
     /**
-     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="column_kanban")
+     * @ORM\OneToMany(targetEntity=Task::class, mappedBy="column_kanban", cascade={"persist", "remove"})
      */
     private $tasks;
 
+    /**
+     * ColumnKanban constructor.
+     */
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -57,11 +70,18 @@ class ColumnKanban
         return $this;
     }
 
+    /**
+     * @return TableKanban|null
+     */
     public function getTableKanban(): ?TableKanban
     {
         return $this->table_kanban;
     }
 
+    /**
+     * @param TableKanban|null $table_kanban
+     * @return $this
+     */
     public function setTableKanban(?TableKanban $table_kanban): self
     {
         $this->table_kanban = $table_kanban;
@@ -77,6 +97,10 @@ class ColumnKanban
         return $this->tasks;
     }
 
+    /**
+     * @param Task $task
+     * @return $this
+     */
     public function addTask(Task $task): self
     {
         if (!$this->tasks->contains($task)) {
@@ -87,6 +111,10 @@ class ColumnKanban
         return $this;
     }
 
+    /**
+     * @param Task $task
+     * @return $this
+     */
     public function removeTask(Task $task): self
     {
         if ($this->tasks->contains($task)) {
@@ -98,5 +126,18 @@ class ColumnKanban
         }
 
         return $this;
+    }
+
+    /**
+     * @return array|mixed
+     */
+    public function jsonSerialize()
+    {
+        return [
+            "id"=>$this->getId(),
+            "name"=>$this->getName(),
+            "table"=>$this->getTableKanban()->getId(),
+            "tasks"=>$this->getTasks()->toArray()
+        ];
     }
 }

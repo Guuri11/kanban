@@ -17,10 +17,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
-            lazy: true
             provider: app_user_provider
+            anonymous: lazy
+            json_login:
+                check_path: /api/user/login
 
+            logout:
+                path: /api/user/logout
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
@@ -30,5 +33,5 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/home, roles: ROLE_USER }
         # - { path: ^/profile, roles: ROLE_USER }
