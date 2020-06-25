@@ -124,6 +124,11 @@ class Task implements \JsonSerializable
         return $this;
     }
 
+    public function __toString()
+    {
+        return$this->getName();
+    }
+
     public function jsonSerialize()
     {
         return [

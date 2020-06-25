@@ -140,4 +140,9 @@ class ColumnKanban implements \JsonSerializable
             "tasks"=>$this->getTasks()->toArray()
         ];
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
 }

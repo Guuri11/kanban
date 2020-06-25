@@ -1,0 +1,73 @@
+/* footer social icons */
+.social-icons {
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+
+  li {
+    display: inline-block;
+    margin-bottom: 4px;
+
+    &.title {
+      margin-right: 15px;
+      text-transform: uppercase;
+      color: #96a2b2;
+      font-weight: 700;
+      font-size: 13px;
+    }
+  }
+
+  a {
+    background-color: #eceeef;
+    color: #818a91;
+    font-size: 16px;
+    display: inline-block;
+    line-height: 44px;
+    width: 44px;
+    height: 44px;
+    text-align: center;
+    margin-right: 8px;
+    border-radius: 100%;
+    -webkit-transition: all .2s linear;
+    -o-transition: all .2s linear;
+    transition: all 0.2s linear;
+
+    &:active, &:focus, &:hover {
+      color: #fff;
+      background-color: #29aafe;
+    }
+  }
+
+  &.size-sm a {
+    line-height: 34px;
+    height: 34px;
+    width: 34px;
+    font-size: 14px;
+  }
+
+  a {
+    &.facebook:hover {
+      background-color: #3b5998;
+    }
+
+    &.twitter:hover {
+      background-color: #00aced;
+    }
+
+    &.linkedin:hover {
+      background-color: #007bb6;
+    }
+
+    &.github:hover {
+      background-color: #24292e;
+    }
+  }
+}
+
+@media (max-width: 767px) {
+  .social-icons li.title {
+    display: block;
+    margin-right: 0;
+    font-weight: 600;
+  }
+}

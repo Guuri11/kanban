@@ -173,7 +173,7 @@ class UserController extends AbstractController
                 "success"=>false,
                 "message"=>"No has iniciado sesión",
             ];
-            return new JsonResponse($response,Response::HTTP_NON_AUTHORITATIVE_INFORMATION);
+            return new JsonResponse($response,Response::HTTP_BAD_REQUEST);
         } else {
             $user = $userRepository->findOneBy(['email'=>$this->getUser()->getUsername()]);
             $response = [
