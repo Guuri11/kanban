@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Footer() {
     return (
-        <footer className="text-muted">
+        <footer className="d-sm-none d-md-block text-muted bg-white">
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-sm-6 col-xs-12">

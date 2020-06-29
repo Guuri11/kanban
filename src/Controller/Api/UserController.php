@@ -173,9 +173,9 @@ class UserController extends AbstractController
                 "success"=>false,
                 "message"=>"No has iniciado sesión",
             ];
-            return new JsonResponse($response,Response::HTTP_BAD_REQUEST);
+            return new JsonResponse($response,Response::HTTP_OK);
         } else {
-            $user = $userRepository->findOneBy(['email'=>$this->getUser()->getUsername()]);
+            $user = $userRepository->findOneBy(['username'=>$this->getUser()->getUsername()]);
             $response = [
                 "success"=>true,
                 "message"=>"Usuario logueado",
