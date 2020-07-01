@@ -18,7 +18,7 @@ class DefaultController extends AbstractController
     }
 
     /**
-     * @Route("/{reactRouting}", name="homepage")
+     * @Route("/{reactRouting}", name="homepage", requirements={"reactRouting"=".+"}, defaults={"reactRouting": null}))
      *
      * Controls all the public routes but dont access into /admin
      */

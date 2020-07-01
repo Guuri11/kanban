@@ -3,6 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
+import Table from "./Table";
 
 export default function CustomRouter() {
 
@@ -11,7 +12,7 @@ export default function CustomRouter() {
             <Switch>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/registrarse" component={Register}/>
-                <Route exact path="/table/{id}" component={Home}/>
+                <Route exact path="/tabla/:id" component={Table}/>
                 <Route exact path="/" component={Home}/>
                 <Route component={Home}/>
             </Switch>

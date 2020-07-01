@@ -65,7 +65,7 @@ export default function HomePresentational(props) {
                             props.tables.map((table,id) => {
                                 return (
                                         props.table_section === 'show' ?
-                                            <Link key={id} to={'/tabla'} className="list-group-item list-group-item-action">{table.name}
+                                            <Link key={id} to={`/tabla/${table.id}`} className="list-group-item list-group-item-action">{table.name}
                                                 <button className="btn btn-sm btn-danger float-right ml-1" onClick={() => props.handleDeleteTable(table.id, id)}>
                                                     <i className="fa fa-trash text-white"/>
                                                 </button>
@@ -87,7 +87,7 @@ export default function HomePresentational(props) {
                                                     </form>
                                                 </div>
                                                 :
-                                                <Link key={id} to={'/tabla'} className="list-group-item list-group-item-action">{table.name}
+                                                <Link key={id} to={`/tabla/${table.id}`} className="list-group-item list-group-item-action">{table.name}
                                                     <button className="btn btn-sm btn-danger float-right ml-1" onClick={() => props.handleDeleteTable(table.id, id)}>
                                                         <i className="fa fa-trash text-white"/>
                                                     </button>
