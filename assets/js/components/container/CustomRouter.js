@@ -11,7 +11,9 @@ export default function CustomRouter() {
             <Switch>
                 <Route exact path="/login" component={Login}/>
                 <Route exact path="/registrarse" component={Register}/>
+                <Route exact path="/table/{id}" component={Home}/>
                 <Route exact path="/" component={Home}/>
+                <Route component={Home}/>
             </Switch>
         </Router>
     )

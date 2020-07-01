@@ -227,7 +227,7 @@ class UserController extends AbstractController
                     $entityManager->flush();
 
                 }catch (Exception $e) {
-                    $apiUtils->errorResponse("No se ha podido eliminar la cuenta");
+                    $apiUtils->errorResponse("No se ha podido eliminar la cuenta",[$e->getMessage()]);
                     return new JsonResponse($apiUtils->getResponse(), Response::HTTP_ACCEPTED,['Content-type'=>'application/json']);
                 }
 

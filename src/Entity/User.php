@@ -38,7 +38,7 @@ class User implements UserInterface, \JsonSerializable
     private $password;
 
     /**
-     * @ORM\OneToMany(targetEntity=TableKanban::class, mappedBy="user")
+     * @ORM\OneToMany(targetEntity=TableKanban::class, mappedBy="user", cascade={"persist", "remove"})
      */
     private $tablesKanban;
 

@@ -6,7 +6,8 @@ export default function Footer() {
             <div className="container">
                 <div className="row justify-content-center">
                     <div className="col-md-8 col-sm-6 col-xs-12">
-                        <p className="copyright-text">Copyright &copy; 2020 SOFTPROD | All Rights Reserved by <span className={"text-primary"}>Sergio Gurillo Corral - Web Developer</span> </p>
+                        <p className="copyright-text">Copyright &copy; 2020 SOFTPROD | All Rights Reserved by <a href={'https://www.linkedin.com/in/sergio-gurillo-corral-2585431b0/'}
+                               className={"text-primary"}>Sergio Gurillo Corral - Web Developer</a> </p>
                     </div>
 
                     <ul className="social-icons">

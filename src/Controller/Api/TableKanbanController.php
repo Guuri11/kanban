@@ -96,7 +96,7 @@ class TableKanbanController extends AbstractController
                     $user = $userRepository->findOneBy(["username"=>$this->getUser()->getUsername()]);
                     $table->setName($data["name"]);
                     $table->setUser($user);
-                    $table->setImage(null);
+                    $table->setImage("default");
 
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($table);

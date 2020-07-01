@@ -35,6 +35,7 @@ export default function Register() {
             })
             .catch(e => setError('Datos no válidos'));
 
+        sessionStorage.setItem('auth', true)
         setSending(false);
     }
 
