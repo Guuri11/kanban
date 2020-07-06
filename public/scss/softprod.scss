@@ -117,3 +117,81 @@ footer {
   bottom: 0;
   width: 100%;
 }
+
+.base {
+  display: grid;
+  grid-template-rows: max-content auto;
+  grid-gap: 10px;
+  height: 100%;
+  padding: 5px;
+}
+
+.board {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-rows: max-content auto;
+}
+
+.board-lists {
+  display: grid;
+  grid-auto-columns: 272px;
+  grid-auto-flow: column;
+  grid-gap: 8px;
+  overflow: scroll;
+}
+
+.column-area {
+  height: 100%;
+}
+
+.board-list {
+  background-color: rgb(235, 236, 240);
+  border-radius: 3px;
+  padding: 10px;
+}
+
+.board-lists {
+  display: grid;
+  grid-auto-columns: 272px;
+  grid-auto-flow: column;
+  grid-gap: 8px;
+  overflow: scroll;
+}
+
+.board-list, .list-body {
+  background-color: rgb(235, 236, 240);
+  border-radius: 3px;
+  display: grid;
+  grid-auto-rows: max-content;
+  grid-gap: 10px;
+  height: max-content;
+  padding: 10px;
+}
+
+.list-title {
+  font-weight: bold;
+}
+
+.card {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(9,30,66,.25);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.add-card {
+  padding-top: 10px;
+  padding-bottom: 5px;
+}
+
+.btn-secondary {
+  background-color: #ebecf0;
+  color: black;
+  border: none;
+  &:hover,:focus {
+    background-color: #c4c5c9;
+    color: black;
+  }
+}
+
