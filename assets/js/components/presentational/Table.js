@@ -6,14 +6,6 @@ import Column from "./Column";
 
 export default function TablePresentational(props) {
 
-    const tasks = [
-        {id:1, name:"Tarea 1"},
-        {id:2, name:"Tarea 2"},
-        {id:3, name:"Tarea 3"},
-        {id:4, name:"Tarea 4"},
-        {id:5, name:"Tarea 5"},
-    ]
-
     return (
         <div>
             <Header/>
@@ -23,18 +15,55 @@ export default function TablePresentational(props) {
                         <div className="col-1">
                             <h4 className="font-weight-bolder">{props.table.name}</h4>
                         </div>
-                        <div className="col">
-                            <button className="btn btn-primary"> + </button>
+                        <div>
+                            <button className="btn btn-sm btn-info float-right ml-3" onClick={ () => props.setChangeToEdit(false)}>
+                                <i className="fa fa-eye text-white"/> Visualizar columnas
+                            </button>
+                            <button className="btn btn-sm btn-info float-right ml-3" onClick={ () => props.setChangeToEdit(true)}>
+                                <i className="fa fa-edit text-white"/> Editar columnas
+                            </button>
+                            <button className="btn btn-sm btn-info float-right ml-3" onClick={() => props.setCreateTaskSelected(!props.createTaskSelected)}>
+                                <i className="fa fa-tasks text-white"/> Crear tarea
+                            </button>
                         </div>
                     </div>
                     <div className="board mt-3">
                         <div className="board-lists">
-                            <Column id={'column-1'} dropIt={props.dropIt} allowDrop={props.allowDrop} dragStart={props.dragStart} tasks={tasks} column={{title: "To do"}}/>
-                            <Column id={'column-2'} dropIt={props.dropIt} allowDrop={props.allowDrop} dragStart={props.dragStart} tasks={[]} column={{title: "In process"}}/>
-                            <Column id={'column-3'} dropIt={props.dropIt} allowDrop={props.allowDrop} dragStart={props.dragStart} tasks={[]} column={{title: "Done"}}/>
-                            <div className="board-list" id='list3'>
-                                <button className="btn btn-secondary text-left">+ Añade otra columna</button>
-                            </div>
+                            {
+                                props.columns !== undefined && props.columns.length > 0 ?
+                                    props.columns.map( (column, idx) => {
+                                        return <Column key={idx} id={'column-'+idx+1} dropIt={props.dropIt}
+                                                       allowDrop={props.allowDrop} dragStart={props.dragStart}
+                                                       tasks={column.tasks} column={column} handleDeleteColumn={props.handleDeleteColumn}
+                                                       idx_column={idx} changeToEdit={props.changeToEdit} handleEditColumn={props.handleEditColumn}
+                                                       handleCreateTask={props.handleCreateTask} createTaskSelected={props.createTaskSelected}/>
+                                    } )
+                                    :
+                                    null
+                            }
+                            {
+                                props.createColumnSelected ?
+                                    <div className="board-list" id='list3'>
+                                        <button className="btn btn-secondary text-left" onClick={() => props.setCreateColumnSelected(false)}>
+                                            + Añade otra columna
+                                        </button>
+                                        <form onSubmit={props.handleCreateColumn}>
+                                            <div className="form-group">
+                                                <input type="text" className="form-control" id={"column-add-name"} placeholder="Nombre de la columna..."/>
+                                            </div>
+                                            <div className="form-group">
+                                                <button type={"submit"} className="btn btn-success">Crear</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    :
+                                    <div className="board-list" id='list3'>
+                                        <button className="btn btn-secondary text-left" onClick={() => props.setCreateColumnSelected(true)}>
+                                            + Añadir columna
+                                        </button>
+                                    </div>
+                            }
+
                         </div>
                     </div>
                 </div>

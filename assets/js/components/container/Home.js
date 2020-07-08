@@ -44,8 +44,6 @@ function Home(props) {
                 if (r.data.success)
                     setToken(r.data.results);
             }).catch(e => props.history.push('/login'));
-
-
         }
         setLoading(false);
     }, [] )

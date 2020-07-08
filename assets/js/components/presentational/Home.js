@@ -65,11 +65,12 @@ export default function HomePresentational(props) {
                             props.tables.map((table,id) => {
                                 return (
                                         props.table_section === 'show' ?
-                                            <Link key={id} to={`/tabla/${table.id}`} className="list-group-item list-group-item-action">{table.name}
+                                            <div key={id} className="list-group-item list-group-item-action">
+                                                <Link to={`/tabla/${table.id}`}>{table.name}</Link>
                                                 <button className="btn btn-sm btn-danger float-right ml-1" onClick={() => props.handleDeleteTable(table.id, id)}>
                                                     <i className="fa fa-trash text-white"/>
                                                 </button>
-                                            </Link>
+                                            </div>
                                             :
                                             props.table_section === 'edit' ?
                                                 <div key={id} className="list-group-item list-group-item-action">
@@ -87,11 +88,12 @@ export default function HomePresentational(props) {
                                                     </form>
                                                 </div>
                                                 :
-                                                <Link key={id} to={`/tabla/${table.id}`} className="list-group-item list-group-item-action">{table.name}
+                                                <div key={id} className="list-group-item list-group-item-action">
+                                                    <Link to={`/tabla/${table.id}`}>{table.name}</Link>
                                                     <button className="btn btn-sm btn-danger float-right ml-1" onClick={() => props.handleDeleteTable(table.id, id)}>
                                                         <i className="fa fa-trash text-white"/>
                                                     </button>
-                                                </Link>
+                                                </div>
                                 )
                             })
                             :

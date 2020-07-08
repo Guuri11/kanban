@@ -184,7 +184,7 @@ class ColumnKanbanController extends AbstractController
     }
 
     /**
-     * @Route("/delete/{id}", name="api_table_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="api_column_delete", methods={"DELETE"})
      * @param Request $request
      * @param ColumnKanban $columnKanban
      * @param ApiUtils $apiUtils

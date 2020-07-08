@@ -66,7 +66,7 @@ class TaskController extends AbstractController
             if (hash_equals($_SESSION["token"], $data["token"])) {
                 try {
                     $task->setName($data["name"]);
-                    $task->setDescription($data["description"]);
+                    $task->setDescription("");
                     $task->setFinished(false);
                     $task->setCreatedAt(new \DateTime());
 
@@ -87,7 +87,7 @@ class TaskController extends AbstractController
                     $apiUtils->errorResponse( "No se pudo crear la tarea");
                     return new JsonResponse($apiUtils->getResponse(), Response::HTTP_BAD_REQUEST, ['Content-type' => 'application/json']);
                 }
-                $apiUtils->successResponse("¡Tarea creada!",$column);
+                $apiUtils->successResponse("¡Tarea creada!",$task);
                 return new JsonResponse($apiUtils->getResponse(), Response::HTTP_CREATED, ['Content-type' => 'application/json']);
             }else {
                 // Send error response if csrf token isn't valid
