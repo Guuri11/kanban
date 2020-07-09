@@ -6,6 +6,7 @@ namespace App\Controller\Api;
 use App\Entity\Task;
 use App\Repository\ColumnKanbanRepository;
 use App\Repository\TableKanbanRepository;
+use App\Repository\TaskRepository;
 use App\Utils\ApiUtils;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -79,6 +80,8 @@ class TaskController extends AbstractController
 
                     $task->setColumnKanban($column);
 
+                    $task->setPosition(count($task->getColumnKanban()->getTasks()->toArray()));
+
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($task);
                     $em->flush();
@@ -139,6 +142,7 @@ class TaskController extends AbstractController
             // if token received is the same than original do process
             if (hash_equals($_SESSION["token"], $data["token"])) {
                 try {
+                    $task->setId(intval($data["id"]));
                     $task->setName($data["name"]);
                     $task->setDescription($data["description"]);
                     $task->setFinished($data["finished"]);
@@ -157,6 +161,108 @@ class TaskController extends AbstractController
                 }
 
                 $apiUtils->successResponse("¡Actualización con éxito!", $task);
+                return new JsonResponse($apiUtils->getResponse(), Response::HTTP_ACCEPTED,['Content-type'=>'application/json']);
+            }else {
+                // Send error response if csrf token isn't valid
+                $apiUtils->setResponse([
+                    "success" => false,
+                    "message" => "Validación no completada",
+                    "errors" => []
+                ]);
+                return new JsonResponse($apiUtils->getResponse(), Response::HTTP_BAD_REQUEST, ['Content-type' => 'application/json']);
+            }
+        }else {
+            // Send error response if there's no csrf token
+            $apiUtils->setResponse([
+                "success" => false,
+                "message" => "Validación no completada",
+                "errors" => $data["token"]
+            ]);
+            return new JsonResponse($apiUtils->getResponse(), Response::HTTP_BAD_REQUEST, ['Content-type' => 'application/json']);
+        }
+    }
+
+    /**
+     * @Route("/swap", name="api_task_swap", methods={"PUT"})
+     * @param Request $request
+     * @param TaskRepository $taskRepository
+     * @param ColumnKanbanRepository $columnKanbanRepository
+     * @param ApiUtils $apiUtils
+     * @return JsonResponse
+     */
+    public function swapPositions(Request $request, TaskRepository $taskRepository,
+                                    ColumnKanbanRepository $columnKanbanRepository, ApiUtils $apiUtils) : JsonResponse
+    {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        // Get request data
+        $apiUtils->getContent($request);
+
+        // Sanitize data
+        $apiUtils->setData($apiUtils->sanitizeData($apiUtils->getData()));
+        $data = $apiUtils->getData();
+
+        // CSRF Protection process
+        if (!empty($data["token"])) {
+            // if token received is the same than original do process
+            if (hash_equals($_SESSION["token"], $data["token"])) {
+
+                try {
+                    $task_one = $taskRepository->find(intval($data["task_one"]));
+
+                    // Check task owner
+                    if ($task_one->getColumnKanban()->getTableKanban()->getUser()->getUsername() !== $this->getUser()->getUsername()){
+                        $apiUtils->notFoundResponse("Tarea no encontrada");
+                        return new JsonResponse($apiUtils->getResponse(),Response::HTTP_NOT_FOUND,['Content-type'=>'application/json']);
+                    }
+
+                    if (array_key_exists('task_two', $data)){
+
+                        $task_two = $taskRepository->find(intval($data["task_two"]));
+
+                        // Check tasks owner
+                        if ($task_two->getColumnKanban()->getTableKanban()->getUser()->getUsername() !== $this->getUser()->getUsername()){
+                            $apiUtils->notFoundResponse("Tarea no encontrada");
+                            return new JsonResponse($apiUtils->getResponse(),Response::HTTP_NOT_FOUND,['Content-type'=>'application/json']);
+                        }
+
+                        $arr_tasks = $task_two->getColumnKanban()->getTasks()->toArray();
+
+                        // Swap positions
+                        if ($data["change_column"]){
+                            $task_one->setColumnKanban($task_two->getColumnKanban());
+                            array_splice( $arr_tasks, $task_two->getPosition(), 0, [$task_one] );
+
+                            foreach ($arr_tasks as $key=>$task) {
+                                $task->setPosition($key);
+                            }
+
+                        } else {
+                            $aux = $task_one->getPosition();
+                            $task_one->setPosition($task_two->getPosition());
+                            $task_two->setPosition($aux);
+                        }
+
+                    } else {
+                        $arr_tasks = $columnKanbanRepository->find(intval($data['column']))->getTasks()->toArray();
+                        $task_one->setColumnKanban( $columnKanbanRepository->find(intval($data['column'])) );
+                        array_push($arr_tasks, $task_one);
+
+                        foreach ($arr_tasks as $key=>$task) {
+                            $task->setPosition($key);
+                        }
+                    }
+
+                    // update
+                    $entityManager = $this->getDoctrine()->getManager();
+                    $entityManager->flush();
+
+                } catch (Exception $e){
+                    $apiUtils->errorResponse("Error en la actualización");
+                    return new JsonResponse($apiUtils->getResponse(), Response::HTTP_BAD_REQUEST, ['Content-type' => 'application/json']);
+                }
+
+                $apiUtils->successResponse("¡Actualización con éxito!", $task_one);
                 return new JsonResponse($apiUtils->getResponse(), Response::HTTP_ACCEPTED,['Content-type'=>'application/json']);
             }else {
                 // Send error response if csrf token isn't valid

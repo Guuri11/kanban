@@ -6,6 +6,7 @@ import newColumn from "../api/Column/newColumn";
 import deleteColumn from "../api/Column/deleteColumn";
 import editColumn from "../api/Column/editColumn";
 import newTask from "../api/Task/newTask";
+import swapTasks from "../api/Task/swapTasks";
 
 export default function Table(props) {
 
@@ -23,7 +24,6 @@ export default function Table(props) {
     useEffect( () => {
         getTable(id).then( r => {
             if (r.data.success){
-                console.log(r.data.results)
                 setTable(r.data.results);
                 setColumns(r.data.results.columns);
                 setTasks(r.data.results.columns.tasks);
@@ -37,6 +37,7 @@ export default function Table(props) {
     }, [column_changed] )
 
     const dropIt = e => {
+        console.log('drop')
         e.preventDefault();
         let sourceId = e.dataTransfer.getData("text/plain");
         let sourceIdEl=document.getElementById(sourceId);
@@ -46,23 +47,37 @@ export default function Table(props) {
         let targetEl=document.getElementById(e.target.id)
         let targetParentEl=targetEl.parentElement;
 
+        const id_source = sourceIdEl.id
+        const id_target = targetEl.id
 
+        // different column
         if (targetParentEl.id!==sourceIdParentEl.id){
-            if (targetEl.className === sourceIdEl.className){
-                targetParentEl.prepend(sourceIdEl);
 
-            }else{
-                targetEl.prepend(sourceIdEl);
+            // over a task
+            if (targetEl.className === sourceIdEl.className){
+
+                const requestOptions = { token: token, task_one: id_source, task_two: id_target, change_column: true, target_is_task: true }
+
+                swapTasks(requestOptions).catch(e => props.history.push('/'))
+            }
+            // over the list
+            else{
+                const requestOptions = { token: token, task_one: id_source, column: targetEl.getAttribute('data-info'), change_column: true, target_is_task: false }
+                swapTasks(requestOptions).catch(e => props.history.push('/'))
             }
 
-        }else {
-            const clone1 = sourceIdEl.cloneNode(true)
-            const clone2 = targetEl.cloneNode(true)
+        }
+        // same column
+        else {
+            const id_source = sourceIdEl.id
+            const id_target = targetEl.id
 
-            targetEl.parentNode.replaceChild(clone1, targetEl);
-            sourceIdEl.parentNode.replaceChild(clone2, sourceIdEl);
+            const requestOptions = { token: token, task_one: id_source, task_two: id_target, change_column: false, target_is_task: false }
+
+            swapTasks(requestOptions).catch(e => props.history.push('/'))
 
         }
+
     }
 
     const allowDrop = e => {
@@ -139,7 +154,7 @@ export default function Table(props) {
                 setCreateTaskSelected(false)
             }
         })
-            .catch(e=> console.log(e));
+            .catch(e=> props.history.push('/'));
     }
 
     return <TablePresentational

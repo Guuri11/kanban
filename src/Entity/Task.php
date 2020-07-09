@@ -47,9 +47,21 @@ class Task implements \JsonSerializable
      */
     private $column_kanban;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $position;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function setId(int $id): self
+    {
+        $this->id = $id;
+
+        return $this;
     }
 
     public function getName(): ?string
@@ -136,9 +148,22 @@ class Task implements \JsonSerializable
             "name"=>$this->getName(),
             "description"=>$this->getDescription(),
             "column"=>$this->getColumnKanban()->getId(),
+            "position"=>$this->getPosition(),
             "finished"=>$this->getFinished(),
             "finished_at"=>$this->getFinished(),
             "created_at"=>$this->getCreatedAt()
         ];
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): self
+    {
+        $this->position = $position;
+
+        return $this;
     }
 }

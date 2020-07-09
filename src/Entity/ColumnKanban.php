@@ -129,15 +129,30 @@ class ColumnKanban implements \JsonSerializable
     }
 
     /**
+     * @param Task $task_one
+     * @param Task $task_two
+     * @return mixed
+     */
+    public function sortTasks(Task $task_one, Task $task_two)
+    {
+        if ($task_one === $task_two) {
+            return 0;
+        }
+        return $task_one->getPosition() > $task_two->getPosition() ? 1:-1;
+    }
+
+    /**
      * @return array|mixed
      */
     public function jsonSerialize()
     {
+        $tasks = $this->getTasks()->toArray();
+        usort($tasks, ["App\\Entity\\ColumnKanban", "sortTasks"]);
         return [
             "id"=>$this->getId(),
             "name"=>$this->getName(),
             "table"=>$this->getTableKanban()->getId(),
-            "tasks"=>$this->getTasks()->toArray()
+            "tasks"=>$tasks
         ];
     }
 

@@ -22,12 +22,12 @@ export default function Column(props) {
                             <button className="btn btn-danger btn-sm float-right" onClick={() => props.handleDeleteColumn(props.column.id, props.idx_column)}><i className="fa fa-trash"/></button>
                         </div>
                 }
-                <div className="list-body p-1" id={props.id} onDrop={props.dropIt} onDragOver={props.allowDrop}>
+                <div className="list-body p-1" data-info={props.column.id} id={props.id} onDrop={props.dropIt} onDragOver={props.allowDrop}>
                     {
                         props.tasks.length > 0 ?
                             props.tasks.map( (task, idx) => {
                                 return (
-                                    <Card key={idx} dragStart={props.dragStart} id={task.id} name={task.name}/>
+                                    <Card key={idx} dragStart={props.dragStart} task={task}/>
                                 )
                             } )
                             :
