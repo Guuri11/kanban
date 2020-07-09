@@ -6,7 +6,7 @@ export default function Card(props) {
 
     return (
         <>
-            <div className="card" draggable={"true"} onDragStart={props.dragStart} id={props.id} data-toggle="modal" data-target={"#modal-"+task.id}>
+            <div className="card" draggable={"true"} onDragStart={props.dragStart} id={task.id} data-toggle="modal" data-target={"#modal-"+task.id}>
                 {task.name}
             </div>
             <div className="modal fade" id={"modal-"+task.id} tabIndex="-1" role="dialog" aria-labelledby="title-modal" aria-hidden="true">

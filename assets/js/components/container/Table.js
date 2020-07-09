@@ -37,7 +37,6 @@ export default function Table(props) {
     }, [column_changed] )
 
     const dropIt = e => {
-        console.log('drop')
         e.preventDefault();
         let sourceId = e.dataTransfer.getData("text/plain");
         let sourceIdEl=document.getElementById(sourceId);
@@ -78,6 +77,7 @@ export default function Table(props) {
 
         }
 
+        setColumnChanged(!column_changed);
     }
 
     const allowDrop = e => {
