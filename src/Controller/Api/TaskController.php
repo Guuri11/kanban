@@ -142,7 +142,6 @@ class TaskController extends AbstractController
             // if token received is the same than original do process
             if (hash_equals($_SESSION["token"], $data["token"])) {
                 try {
-                    $task->setId(intval($data["id"]));
                     $task->setName($data["name"]);
                     $task->setDescription($data["description"]);
                     $task->setFinished($data["finished"]);
@@ -156,7 +155,7 @@ class TaskController extends AbstractController
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->flush();
                 } catch (Exception $e){
-                    $apiUtils->errorResponse("Error en la actualización");
+                    $apiUtils->errorResponse("Error en la actualización",[$e->getMessage()]);
                     return new JsonResponse($apiUtils->getResponse(), Response::HTTP_BAD_REQUEST, ['Content-type' => 'application/json']);
                 }
 

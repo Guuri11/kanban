@@ -7,26 +7,28 @@ import deleteColumn from "../api/Column/deleteColumn";
 import editColumn from "../api/Column/editColumn";
 import newTask from "../api/Task/newTask";
 import swapTasks from "../api/Task/swapTasks";
+import editTask from "../api/Task/editTask";
 
 export default function Table(props) {
 
     const [table, setTable] = useState({});
     const [columns, setColumns] = useState([]);
     const [column_changed, setColumnChanged] = useState(false);
-    const [tasks, setTasks] = useState([]);
     const [token, setToken] = useState('');
     const [createColumnSelected, setCreateColumnSelected] = useState(false);
     const [createTaskSelected, setCreateTaskSelected] = useState(false);
     const [change, setChange] = useState(false);
     const [changeToEdit, setChangeToEdit] = useState(false);
     const {id} = props.match.params
+    const [ select_edit_task_name, setEditTaskName ] = useState(false);
+    const [ select_edit_task_description, setEditTaskDescription ] = useState(false);
+    const [ descriptionTask, setDescriptionTask ] = useState('');
 
     useEffect( () => {
         getTable(id).then( r => {
             if (r.data.success){
                 setTable(r.data.results);
                 setColumns(r.data.results.columns);
-                setTasks(r.data.results.columns.tasks);
             }
         } ).catch(e => props.history.push('/'))
 
@@ -157,11 +159,33 @@ export default function Table(props) {
             .catch(e=> props.history.push('/'));
     }
 
+    const handleEditTask = (e, task) => {
+        if (e.type !== "click")
+            e.preventDefault();
+
+        const name = document.getElementById('edit-task-name-'+task.id) ? document.getElementById('edit-task-name-'+task.id).value:task.name;
+        const description = document.getElementById('edit-task-description-'+task.id) ? document.getElementById('edit-task-description-'+task.id).value:task.description;
+        const finished = document.getElementById('task-finished-'+task.id).checked;
+
+        const requestOptions = { token: token, column: task.column, name: name, description: descriptionTask === '' ? description: descriptionTask, finished: finished };
+
+        editTask(task.id, requestOptions).then(r => {
+            if (r.data.success){
+                setEditTaskDescription(false);
+                setEditTaskName(false);
+                setColumnChanged(!column_changed);
+                setDescriptionTask('');
+            }
+        }).catch(e => props.history.push('/'));
+    }
+
     return <TablePresentational
         table={table} columns={columns} dropIt={dropIt} allowDrop={allowDrop} dragStart={dragStart}
         createColumnSelected={createColumnSelected} setCreateColumnSelected={setCreateColumnSelected}
         handleCreateColumn={handleCreateColumn} handleDeleteColumn={handleDeleteColumn}
         setChangeToEdit={setChangeToEdit} changeToEdit={changeToEdit} handleEditColumn={handleEditColumn}
         handleCreateTask={handleCreateTask} setCreateTaskSelected={setCreateTaskSelected}
-        createTaskSelected={createTaskSelected}/>
+        createTaskSelected={createTaskSelected} select_edit_task_name={select_edit_task_name}
+        setEditTaskName={setEditTaskName} select_edit_task_description={select_edit_task_description}
+        setEditTaskDescription={setEditTaskDescription} handleEditTask={handleEditTask} setDescriptionTask={setDescriptionTask}/>
 }

@@ -27,7 +27,10 @@ export default function Column(props) {
                         props.tasks.length > 0 ?
                             props.tasks.map( (task, idx) => {
                                 return (
-                                    <Card key={idx} dragStart={props.dragStart} task={task}/>
+                                    <Card key={idx} dragStart={props.dragStart} task={task} select_edit_task_name={props.select_edit_task_name}
+                                          setEditTaskName={props.setEditTaskName} select_edit_task_description={props.select_edit_task_description}
+                                          setEditTaskDescription={props.setEditTaskDescription} handleEditTask={props.handleEditTask}
+                                          setDescriptionTask={props.setDescriptionTask}/>
                                 )
                             } )
                             :

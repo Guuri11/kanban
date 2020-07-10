@@ -36,7 +36,11 @@ export default function TablePresentational(props) {
                                                        allowDrop={props.allowDrop} dragStart={props.dragStart}
                                                        tasks={column.tasks} column={column} handleDeleteColumn={props.handleDeleteColumn}
                                                        idx_column={idx} changeToEdit={props.changeToEdit} handleEditColumn={props.handleEditColumn}
-                                                       handleCreateTask={props.handleCreateTask} createTaskSelected={props.createTaskSelected}/>
+                                                       handleCreateTask={props.handleCreateTask} createTaskSelected={props.createTaskSelected}
+                                                       select_edit_task_name={props.select_edit_task_name} setEditTaskName={props.setEditTaskName}
+                                                       select_edit_task_description={props.select_edit_task_description}
+                                                       setEditTaskDescription={props.setEditTaskDescription} handleEditTask={props.handleEditTask}
+                                                       setDescriptionTask={props.setDescriptionTask}/>
                                     } )
                                     :
                                     null
