@@ -3,8 +3,16 @@ import Header from "../container/Header";
 import Footer from "./Footer";
 import Column from "./Column";
 import {Palette} from 'react-palette';
+import $ from "jquery";
 
 export default function TablePresentational(props) {
+
+
+    // Jquery code to show sidebar
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
 
     return (
         <div className={"bg-image-table"} style={ { backgroundImage: "url("+props.table.image+")" } }>
@@ -42,7 +50,7 @@ export default function TablePresentational(props) {
                         <div className="col-1">
                             <Palette src={props.table.image}>
                                 {({ data }) => (
-                                    <h4 className="font-weight-bolder text-info" style={{ color: data.lightMuted }}>{props.table.name}</h4>
+                                    <h4 className="font-weight-bolder text-info text-uppercase" style={{ color: data.lightMuted }}>{props.table.name}</h4>
                                     )}
                             </Palette>
                         </div>

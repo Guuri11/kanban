@@ -11,8 +11,6 @@ import editTask from "../api/Task/editTask";
 import deleteTask from "../api/Task/deleteTask";
 import axios from "axios";
 import editTable from "../api/Table/editTable";
-import $ from 'jquery';
-
 
 export default function Table(props) {
 
@@ -223,12 +221,6 @@ export default function Table(props) {
             })
             .catch(e => props.history.push('/'));
     }
-
-    $("#menu-toggle").click(function(e) {
-        e.preventDefault();
-        $("#wrapper").toggleClass("toggled");
-    });
-
     return <TablePresentational
         table={table} columns={columns} dropIt={dropIt} allowDrop={allowDrop} dragStart={dragStart}
         createColumnSelected={createColumnSelected} setCreateColumnSelected={setCreateColumnSelected}
