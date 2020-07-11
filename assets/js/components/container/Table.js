@@ -8,6 +8,11 @@ import editColumn from "../api/Column/editColumn";
 import newTask from "../api/Task/newTask";
 import swapTasks from "../api/Task/swapTasks";
 import editTask from "../api/Task/editTask";
+import deleteTask from "../api/Task/deleteTask";
+import axios from "axios";
+import editTable from "../api/Table/editTable";
+import $ from 'jquery';
+
 
 export default function Table(props) {
 
@@ -23,6 +28,8 @@ export default function Table(props) {
     const [ select_edit_task_name, setEditTaskName ] = useState(false);
     const [ select_edit_task_description, setEditTaskDescription ] = useState(false);
     const [ descriptionTask, setDescriptionTask ] = useState('');
+    const [ image_input, setImageInput ] = useState('');
+    const [ image_results, setImageResults ] = useState([]);
 
     useEffect( () => {
         getTable(id).then( r => {
@@ -159,6 +166,21 @@ export default function Table(props) {
             .catch(e=> props.history.push('/'));
     }
 
+    const handleDeleteTask = (id) => {
+
+        const ans = confirm('¿Estás seguro de que quieres borrar la tarea?')
+
+        if (ans) {
+            const requestOptions = { data: { token: token } };
+
+            deleteTask(id, requestOptions).then(r => {
+                if (r.data.success){
+                    setColumnChanged(!column_changed);
+                }
+            }).catch(e => props.history.push('/'));
+        }
+    }
+
     const handleEditTask = (e, task) => {
         if (e.type !== "click")
             e.preventDefault();
@@ -179,6 +201,34 @@ export default function Table(props) {
         }).catch(e => props.history.push('/'));
     }
 
+    const handleGetImageResults = e => {
+       e.preventDefault();
+
+        axios.get(`https://api.unsplash.com/search/photos?query=${image_input}&client_id=YwGCrVUctkLT42HxME8DOEZYdXrES_fX2rcEIM624Og`)
+            .then(r => {
+                if (r.data.total > 0){
+                    setImageResults(r.data.results);
+                }
+            })
+    }
+
+    const handleEditImageTable = img => {
+        const requestOptions = { name: table.name, image: img.urls.regular, token: token };
+
+        editTable(table.id, requestOptions)
+            .then(r =>{
+                if (r.data.success){
+                    setColumnChanged(!column_changed);
+                }
+            })
+            .catch(e => props.history.push('/'));
+    }
+
+    $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+    });
+
     return <TablePresentational
         table={table} columns={columns} dropIt={dropIt} allowDrop={allowDrop} dragStart={dragStart}
         createColumnSelected={createColumnSelected} setCreateColumnSelected={setCreateColumnSelected}
@@ -187,5 +237,7 @@ export default function Table(props) {
         handleCreateTask={handleCreateTask} setCreateTaskSelected={setCreateTaskSelected}
         createTaskSelected={createTaskSelected} select_edit_task_name={select_edit_task_name}
         setEditTaskName={setEditTaskName} select_edit_task_description={select_edit_task_description}
-        setEditTaskDescription={setEditTaskDescription} handleEditTask={handleEditTask} setDescriptionTask={setDescriptionTask}/>
+        setEditTaskDescription={setEditTaskDescription} handleEditTask={handleEditTask} setDescriptionTask={setDescriptionTask}
+        handleDeleteTask={handleDeleteTask} handleGetImageResults={handleGetImageResults} setImageInput={setImageInput}
+        image_input={image_input} image_results={image_results} handleEditImageTable={handleEditImageTable}/>
 }

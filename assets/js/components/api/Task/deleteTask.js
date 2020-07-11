@@ -1,6 +1,5 @@
 import axios from "axios";
 
-export default function deleteTask(id) {
-    axios.delete(`/api/task/delete/${id}`).then(res => console.log(res))
-        .catch(e=> console.log(e.response));
+export default function deleteTask(id, requestOptions) {
+    return axios.delete(`/api/task/delete/${id}`, requestOptions)
 }

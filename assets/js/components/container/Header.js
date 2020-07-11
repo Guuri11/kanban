@@ -8,7 +8,6 @@ export default function Header() {
     useEffect( () => {
         if (sessionStorage.getItem('auth') === null)
             isAuth().then(r => {
-                console.log(r.data);
                 sessionStorage.setItem('auth', r.data.success);
             })
     }, [] )

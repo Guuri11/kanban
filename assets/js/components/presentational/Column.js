@@ -22,7 +22,7 @@ export default function Column(props) {
                             <button className="btn btn-danger btn-sm float-right" onClick={() => props.handleDeleteColumn(props.column.id, props.idx_column)}><i className="fa fa-trash"/></button>
                         </div>
                 }
-                <div className="list-body p-1" data-info={props.column.id} id={props.id} onDrop={props.dropIt} onDragOver={props.allowDrop}>
+                <div className="list-body p-1 list-area" data-info={props.column.id} id={props.id} onDrop={props.dropIt} onDragOver={props.allowDrop}>
                     {
                         props.tasks.length > 0 ?
                             props.tasks.map( (task, idx) => {
@@ -30,7 +30,7 @@ export default function Column(props) {
                                     <Card key={idx} dragStart={props.dragStart} task={task} select_edit_task_name={props.select_edit_task_name}
                                           setEditTaskName={props.setEditTaskName} select_edit_task_description={props.select_edit_task_description}
                                           setEditTaskDescription={props.setEditTaskDescription} handleEditTask={props.handleEditTask}
-                                          setDescriptionTask={props.setDescriptionTask}/>
+                                          setDescriptionTask={props.setDescriptionTask} handleDeleteTask={props.handleDeleteTask}/>
                                 )
                             } )
                             :

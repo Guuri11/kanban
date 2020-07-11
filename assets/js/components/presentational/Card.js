@@ -4,12 +4,19 @@ export default function Card(props) {
 
     const {task} = props;
 
+    const day = task.finished_at ? new Date(task.finished_at.date).getDate() : null;
+    const month = task.finished_at ? new Date(task.finished_at.date).getMonth() : null;
+    const year = task.finished_at ? new Date(task.finished_at.date).getFullYear() : null;
+    const hour = task.finished_at ? new Date(task.finished_at.date).getHours() : null;
+    const minute = task.finished_at ? new Date(task.finished_at.date).getMinutes() : null;
+    const seconds = task.finished_at ? new Date(task.finished_at.date).getSeconds() : null;
+
     return (
         <>
             <div className="card" draggable={"true"} onDragStart={props.dragStart} id={task.id} data-toggle="modal" data-target={"#modal-"+task.id}>
                 {task.name}
             </div>
-            <div className="modal fade" id={"modal-"+task.id} data-backdrop="static" data-keyboard="false" tabIndex="-1"
+            <div className="modal fade" id={"modal-"+task.id} data-backdrop="static" data-keyboard="true" tabIndex="-1"
                  role="dialog" aria-labelledby="title-modal" aria-hidden="true">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
@@ -32,9 +39,15 @@ export default function Card(props) {
                                     </form>
                                 </span>
                             </div>
-                            <div className="float-right d-block mt-2 mr-3">
-                                Terminada el 23/04/05
-                            </div>
+                            {
+                                task.finished_at ?
+                                    <div className="float-right d-block mt-2 mr-3">
+                                        Terminada el {day+'/'+month+'/'+year+' '+hour+':'+minute+':'+seconds}
+                                    </div>
+                                    :
+                                    null
+                            }
+
                         </div>
                         {
                             props.select_edit_task_description ?
@@ -59,7 +72,7 @@ export default function Card(props) {
                         <div className="modal-footer">
                             <button type="button" className="btn btn-secondary"
                                     onClick={() => {props.setEditTaskDescription(false); props.setEditTaskName(false)}} data-dismiss="modal">Cerrar</button>
-                            <button type="button" className="btn btn-danger"><i className="fa fa-trash"/></button>
+                            <button type="button" className="btn btn-danger" data-dismiss="modal" onClick={() => props.handleDeleteTask(task.id)}><i className="fa fa-trash"/></button>
                         </div>
                     </div>
                 </div>

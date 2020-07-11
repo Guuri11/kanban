@@ -143,7 +143,7 @@ class Task implements \JsonSerializable
             "column"=>$this->getColumnKanban()->getId(),
             "position"=>$this->getPosition(),
             "finished"=>$this->getFinished(),
-            "finished_at"=>$this->getFinished(),
+            "finished_at"=>$this->getFinishedAt(),
             "created_at"=>$this->getCreatedAt()
         ];
     }

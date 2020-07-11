@@ -151,6 +151,8 @@ class TaskController extends AbstractController
                     $task->setColumnKanban($columnKanban);
                     if ($task->getFinished())
                         $task->setFinishedAt(new \DateTime());
+                    else
+                        $task->setFinishedAt(null);
 
                     $entityManager = $this->getDoctrine()->getManager();
                     $entityManager->flush();

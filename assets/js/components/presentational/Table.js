@@ -1,21 +1,55 @@
 import React from 'react';
 import Header from "../container/Header";
 import Footer from "./Footer";
-import Card from "./Card";
 import Column from "./Column";
+import {Palette} from 'react-palette';
 
 export default function TablePresentational(props) {
 
     return (
-        <div>
+        <div className={"bg-image-table"} style={ { backgroundImage: "url("+props.table.image+")" } }>
             <Header/>
-            <div className="base">
+            <div className="base d-flex toggled" id="wrapper">
+                <div className="border-right bg-white" id="sidebar-wrapper">
+                    <div className="sidebar-heading font-weight-bolder">IMÁGENES</div>
+                    <div className="list-group list-group-flush">
+                        <form onSubmit={props.handleGetImageResults}>
+                            <div className="form-group">
+                                <input type="text" className="form-control" onChange={e => props.setImageInput(e.target.value)} placeholder={'Example: Motivation'} id={'edit-table-image'}/>
+                            </div>
+                            <div className="form-group">
+                                <button type={'submit'} className="btn btn-primary btn-sm">Buscar</button>
+                            </div>
+                        </form>
+                        <h5 className="font-weight-bolder">{props.image_input}</h5>
+                        {
+                            props.image_results.length > 0 ?
+                                props.image_results.map( (image,idx) => {
+                                    return (
+                                        <div key={idx}>
+                                            <img src={image.urls.thumb} alt="No se ha encontrado la imagen"
+                                                 className="img-thumbnail" width="300" onClick={() => props.handleEditImageTable(image)}/>
+                                        </div>
+                                    )
+                                })
+                                :
+                                null
+                        }
+                    </div>
+                </div>
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col-1">
-                            <h4 className="font-weight-bolder">{props.table.name}</h4>
+                            <Palette src={props.table.image}>
+                                {({ data }) => (
+                                    <h4 className="font-weight-bolder text-info" style={{ color: data.lightMuted }}>{props.table.name}</h4>
+                                    )}
+                            </Palette>
                         </div>
                         <div>
+                            <button className="btn btn-sm btn-info float-right ml-3" id="menu-toggle">
+                                <i className="fa fa-image text-white"/> Cambiar fondo
+                            </button>
                             <button className="btn btn-sm btn-info float-right ml-3" onClick={ () => props.setChangeToEdit(false)}>
                                 <i className="fa fa-eye text-white"/> Visualizar columnas
                             </button>
@@ -40,7 +74,7 @@ export default function TablePresentational(props) {
                                                        select_edit_task_name={props.select_edit_task_name} setEditTaskName={props.setEditTaskName}
                                                        select_edit_task_description={props.select_edit_task_description}
                                                        setEditTaskDescription={props.setEditTaskDescription} handleEditTask={props.handleEditTask}
-                                                       setDescriptionTask={props.setDescriptionTask}/>
+                                                       setDescriptionTask={props.setDescriptionTask} handleDeleteTask={props.handleDeleteTask}/>
                                     } )
                                     :
                                     null
